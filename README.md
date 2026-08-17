@@ -1,10 +1,10 @@
 # iTerm2 Settings
 
-这是一份可公开、可迁移的 iTerm2 配置备份。仓库保留 Profiles、配色、字体、快捷键、Hotkey Window、外观与交互设置，并提供一键恢复脚本。
+This repository contains a portable, public-safe backup of my iTerm2 settings. It preserves profiles, color schemes, fonts, key bindings, the Hotkey Window, appearance, and interaction preferences. It also includes scripts for restoring and safely exporting the settings.
 
-## 在新 Mac 上恢复
+## Restore on a New Mac
 
-先安装并至少启动一次 iTerm2，然后退出 iTerm2：
+Install and launch iTerm2 at least once, then quit it completely:
 
 ```bash
 git clone https://github.com/steveli2026/iterm2-settings.git
@@ -13,15 +13,15 @@ cd iterm2-settings
 open -a iTerm
 ```
 
-脚本会先把新 Mac 上已有的 iTerm2 配置备份到：
+Before importing the repository settings, the installer backs up any existing iTerm2 preferences to:
 
 ```text
 ~/Library/Application Support/iTerm2/Settings Backups/
 ```
 
-如需无交互执行，可用 `./install.sh --yes`。
+Use `./install.sh --yes` for a non-interactive installation.
 
-## 从当前 Mac 更新仓库
+## Update the Repository from the Current Mac
 
 ```bash
 ./scripts/export.sh
@@ -31,31 +31,31 @@ git commit -m "Update iTerm2 settings"
 git push
 ```
 
-`export.sh` 会把 macOS preferences database 中的当前设置导出、转成可读 XML，并自动清理：
+`export.sh` reads the current settings from the macOS preferences database, converts them to readable XML, and automatically removes:
 
-- 窗口位置、最近记录、安装 ID 和 `NoSync*` 运行状态
-- 写死的本机 Home 路径（归一化为 `~`）
-- iTerm2 / Sparkle 的版本和更新运行状态
-- 指向其他自定义 preferences folder 的路径
+- Window positions, recent items, installation IDs, and `NoSync*` runtime state
+- Machine-specific absolute Home paths, normalized to `~`
+- iTerm2 and Sparkle version or updater runtime state
+- References to other custom preferences folders
 
-导出时还会扫描常见 token、私钥、带密码 URL、邮箱及 `user@host` 形式的身份信息；发现可疑内容时会拒绝更新目标 plist。
+The export process also scans for common tokens, private keys, credential-bearing URLs, email addresses, and `user@host` identities. If it detects suspicious content, it refuses to update the destination plist.
 
-## 有意不纳入 public repo 的内容
+## Intentionally Excluded from This Public Repository
 
-这不是 iTerm2 的“Export All Settings and Data”完整镜像。以下内容可能包含隐私或密钥，因此不会进入本仓库：
+This is not a complete iTerm2 "Export All Settings and Data" archive. The following data may contain private information or credentials and is intentionally excluded:
 
-- Password Manager / macOS Keychain 中的密码
-- AI Chat 数据库和 secure settings
-- Shell、命令、目录、剪贴板历史
-- SavedState、滚屏内容与正在运行的 session
-- Python API scripts、shell integration 和其他应用数据
+- Password Manager and macOS Keychain credentials
+- AI Chat databases and secure settings
+- Shell, command, directory, and clipboard history
+- SavedState, scrollback content, and running sessions
+- Python API scripts, shell integration files, and other application data
 
-iTerm2 官方也支持从自定义文件夹或 URL 加载设置；本仓库选择显式的 `export.sh` + `install.sh`，让每次公开发布前都经过清理和审阅。参见 [iTerm2 General Preferences](https://iterm2.com/documentation-preferences-general.html)。
+iTerm2 also supports loading settings from a custom folder or URL. This repository uses explicit `export.sh` and `install.sh` commands so every public update can be sanitized and reviewed first. See the [iTerm2 General Preferences documentation](https://iterm2.com/documentation-preferences-general.html).
 
-## 要求
+## Requirements
 
-- 恢复：macOS、iTerm2，以及系统自带的 `defaults` 和 `plutil`
-- 更新导出：另需 `python3`
+- Restore: macOS, iTerm2, and the built-in `defaults` and `plutil` commands
+- Export: the restore requirements plus `python3`
 
 ## License
 
